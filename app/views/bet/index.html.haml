@@ -6,16 +6,56 @@
 %br
 .row
 	.col-md-12.border
-		%p.lead.text-center Results to Date
+		%p.lead.text-center Past Results
 		%table.table.table-bordered
 			%tr
-				%th Days Running
 				%th Bankroll
 				%th Profit
 				%th Staked
-				%th POT
-				%th ROC
-				%th # Bets Placed
+				%th Running Profit
+				%th Running Points
+			-@results.each do |result|
+				%tr
+					%td
+						=result.after
+					%td
+						=result.profit
+					%td
+						=result.total_staked
+					%td
+						=result.running_profit
+					%td
+						=result.running_points_profit
+%br
+.row
+	.col-md-12
+		%p.lead.text-center All Bets
+		%table.table.table-bordered
+			%tr
+				%th Date
+				%th Race
+				%th	Meeting
+				%th Horse
+				%th Stake
+				%th Result
+				%th Profit
+			-@bets.each do |bet|
+				%tr
+					%td
+						=bet.pretty_time
+					%td
+						=bet.race
+					%td
+						=bet.meeting
+					%td
+						=bet.selection
+					%td
+						=bet.stake
+					%td
+						=bet.result
+					%td
+						=bet.profit
+
 
 
 

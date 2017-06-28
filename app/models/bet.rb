@@ -42,5 +42,8 @@ class Bet < ActiveRecord::Base
 			bet.save
 		end
 	end
-	@bts
+	
+	def pretty_time
+  		created_at.strftime("%d-%m-%y")
+  	end
 end
