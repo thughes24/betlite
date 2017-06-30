@@ -14,7 +14,7 @@
 				%th Staked
 				%th Running Profit
 				%th Running Points
-			-@results.each do |result|
+			-@results.first(5).each do |result|
 				%tr
 					%td
 						=result.after
@@ -28,6 +28,14 @@
 						=result.running_points_profit
 %br
 .row
+	.col-md-6.border
+		%p.lead.text-center Points Profit
+		=line_chart @points_graph, curve: false, colors: ["black"], points: false
+	.col-md-6.border
+		%p.lead.text-center Actual Profit
+		=line_chart @profit_graph, curve: false, colors: ["black"], points: false
+%br
+.row
 	.col-md-12
 		%p.lead.text-center All Bets
 		%table.table.table-bordered
@@ -37,6 +45,7 @@
 				%th	Meeting
 				%th Horse
 				%th Stake
+				%th Odds
 				%th Result
 				%th Profit
 			-@bets.each do |bet|
@@ -51,6 +60,8 @@
 						=bet.selection
 					%td
 						=bet.stake
+					%td
+						=bet.odds
 					%td
 						=bet.result
 					%td
