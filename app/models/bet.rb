@@ -10,7 +10,7 @@ class Bet < ActiveRecord::Base
 		formatted_selections_array.each do |x|
 			ActiveRecord::Base.transaction do
 				stake = calculate_stake(x["points"].to_i)
-				@current_bet = Bet.new(meeting: x["meeting"].titleize, race: x["race"],selection: x["selection"].titleize, stake: stake,betId: 'placeholder', meetingId: x["meetingId"], marketId: x["marketId"],selectionId: x["selectionId"], points: x["points"])
+				@current_bet = Bet.new(meeting: x["meeting"].titleize, race: x["race"],selection: x["selection"].titleize, stake: stake,betId: 'placeholder', meetingId: x["meetingId"], marketId: x["marketId"],selectionId: x["selectionId"], points: x["points"], suggested: x["recommended_odds"])
 				if @current_bet.valid?
 					if @bet = @bf.place_bet(x["marketId"],x["selectionId"],Bet.calculate_stake(x["points"].to_f))
 						@current_bet.betId = @bet
