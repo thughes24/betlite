@@ -2,7 +2,7 @@
 %br
 .row
 	.col-md-12.text-center
-		%h4.text-center Bet Lite Service
+		%h4.text-center Bet Lite Bot
 %br
 .row
 	.col-md-12.border
@@ -10,24 +10,25 @@
 		%table.table.table-bordered
 			%tr
 				%th Days Running
-				%th Members
-				%th Profit (Suggested Odds)
-				%th Profit (BSP)
+				%th Bankroll
+				%th Profit
+				%th Points Profit
 				%th Staked
 				%th POT
 				%th ROI
 			%tr
 				%td
 					=Result.days_running
-				%td 0/20
 				%td
-					=Result.lifetime_profit_suggested
+					=Result.bankroll
+				%td
+					=Result.lifetime_profit.round(0)
 				%td
 					=Result.lifetime_points_profit.round(0)
 				%td
-					=Result.lifetime_staked_points.round(0)
+					=Result.lifetime_staked.round(0)
 				%td
-					="#{(Result.pot*100).round(0)}%"
+					="#{Result.pot*100}%"
 				%td
 					="#{((Result.lifetime_profit/10000)*100).round(2)}%"
 
@@ -38,7 +39,9 @@
 		%table.table.table-bordered
 			%tr
 				%th Date
-				%th Points Staked
+				%th Bankroll
+				%th Staked
+				%th Profit
 				%th Points Profit
 				%th POT
 			-@results.first(5).each do |result|
@@ -46,16 +49,23 @@
 					%td
 						=result.date
 					%td
-						=result.total_points_staked
+						=result.after
+					%td
+						=result.total_staked
+					%td
+						=result.profit
 					%td
 						=result.points_profit
 					%td
-						="#{(result.pot*100).round(0)}%"
+						="#{result.pot*100}%"
 %br
 .row
-	.col-md-12.border
-		%p.lead.text-center Profit
+	.col-md-6.border
+		%p.lead.text-center Points Profit
 		=line_chart @points_graph, curve: false, colors: ["black"], points: false
+	.col-md-6.border
+		%p.lead.text-center Actual Profit
+		=line_chart @profit_graph, curve: false, colors: ["black"], points: false
 %br
 .row
 	.col-md-12
@@ -66,8 +76,9 @@
 				%th Race
 				%th	Meeting
 				%th Horse
+				%th Stake
 				%th Suggested Odds
-				%th Betfair SP Odds
+				%th Odds
 				%th Result
 				%th Profit
 			-@bets.each do |bet|
@@ -81,13 +92,15 @@
 					%td
 						=bet.selection
 					%td
+						=bet.stake
+					%td
 						=bet.suggested
 					%td
 						=bet.odds
 					%td
 						=bet.result
 					%td
-						=(bet.profit.to_f/(bet.stake.to_f/2)).round(1)
+						=bet.profit.to_f.round(0)
 
 
 
