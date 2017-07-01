@@ -24,7 +24,7 @@ class BetfairWrapper
 		    	}
 		  	}]
 		})
-		@order["status"] == "SUCCESS"  ? @order["instructionReports"].first["betId"] : false
+		@order
 	end
 
 	def get_result(betId)
