@@ -59,7 +59,7 @@
 %br
 .row
 	.col-md-12
-		%p.lead.text-center Yesterdays Bets
+		%p.lead.text-center All Bets
 		%table.table.table-bordered
 			%tr
 				%th Date
@@ -70,7 +70,7 @@
 				%th Betfair SP Odds
 				%th Result
 				%th Profit
-			-@bets.each do |bet|
+			-@all_bets.each do |bet|
 				%tr
 					%td
 						=bet.pretty_time
