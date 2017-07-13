@@ -1,4 +1,5 @@
 class Result < ActiveRecord::Base
+	belongs_to :portfolio
 	def pot
 		if total_staked != 0
 			((profit.to_f)/(total_staked.to_f)).round(2)

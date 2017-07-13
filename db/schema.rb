@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170630074949) do
+ActiveRecord::Schema.define(version: 20170713103940) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,6 +31,16 @@ ActiveRecord::Schema.define(version: 20170630074949) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "suggested"
+    t.integer "portfolio_id"
+  end
+
+  create_table "portfolios", force: :cascade do |t|
+    t.string "name"
+    t.integer "initial_bankroll"
+    t.integer "current_bankroll"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "results", force: :cascade do |t|
@@ -38,12 +48,11 @@ ActiveRecord::Schema.define(version: 20170630074949) do
     t.integer "previous"
     t.integer "after"
     t.integer "profit"
-    t.integer "points_profit"
     t.integer "total_staked"
     t.integer "running_profit"
-    t.integer "running_points_profit"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "portfolio_id"
   end
 
 end

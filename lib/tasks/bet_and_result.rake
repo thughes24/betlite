@@ -22,19 +22,45 @@ end
 
 ################## IMPORTANT RAKE TASKS ###########################
 
+#task :bet => :environment do
+#  bets = JSON.parse(open("https://elbotto.herokuapp.com/juice/multipicks").read)
+#  Bet.input_bets(bets)
+#end
+
 task :bet => :environment do
   bets = JSON.parse(open("https://elbotto.herokuapp.com/juice/multipicks").read)
+  surefire = JSON.parse(open("https://elbotto.herokuapp.com/juice/surefire").read)
   Bet.input_bets(bets)
+  Bet.input_bets(surefire)
 end
 
+#task :results => :environment do
+#  b = Bet.do_results
+#  if b.count > 0
+#    last_result = Result.last
+#    profit = b.map(&:profit).map(&:to_f).inject(&:+).to_f
+#    points_profit = (profit/(last_result.after/200))
+#    staked = b.map(&:stake).map(&:to_f).inject(&:+).to_f
+#    result = Result.new(date: (Date.parse(Bet.last.created_at.to_s)), previous: last_result.after, after: (last_result.after+profit), profit: profit, points_profit: points_profit, total_staked: staked, running_profit: ((last_result.running_profit)+profit), running_points_profit: (last_result.running_points_profit+points_profit))
+#    result.save
+#  end
+#end
+
 task :results => :environment do
-  b = Bet.do_results
-  if b.count > 0
-    last_result = Result.last
-    profit = b.map(&:profit).map(&:to_f).inject(&:+).to_f
-    points_profit = (profit/(last_result.after/200))
-    staked = b.map(&:stake).map(&:to_f).inject(&:+).to_f
-    result = Result.new(date: (Date.parse(Bet.last.created_at.to_s)), previous: last_result.after, after: (last_result.after+profit), profit: profit, points_profit: points_profit, total_staked: staked, running_profit: ((last_result.running_profit)+profit), running_points_profit: (last_result.running_points_profit+points_profit))
-    result.save
+  bets = Bet.do_results
+  Portfolio.all.each do |portfolio|
+    last_result = portfolio.results.last
+    profit = bets.reject{|f| f.portfolio_id != portfolio.id}.map(&:profit).map(&:to_f).inject(&:+).to_f
+    staked = bets.reject{|f| f.portfolio_id != portfolio.id}.map(&:stake).map(&:to_f).inject(&:+).to_f
+    result = Result.new(portfolio: portfolio, date: (Date.parse(Bet.last.created_at.to_s)), previous: last_result.after, after: (last_result.after+profit), profit: profit, total_staked: staked, running_profit: ((last_result.running_profit)+profit))
+    portfolio.current_bankroll = (last_result.after + profit)
+    result.save!
+    portfolio.save!
   end
 end
+
+
+
+
+
+

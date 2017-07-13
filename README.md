@@ -22,3 +22,8 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+rake db:migrate
+rails c create portfolios
+rails c create first results for surefire bets
+UP TO EDITING INPUT_BET AND RAKE TASKS

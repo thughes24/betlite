@@ -12,7 +12,6 @@
 				%th Days Running
 				%th Bankroll
 				%th Profit
-				%th Points Profit
 				%th Staked
 				%th POT
 				%th ROI
@@ -24,8 +23,6 @@
 				%td
 					=Result.lifetime_profit.round(0)
 				%td
-					=Result.lifetime_points_profit.round(0)
-				%td
 					=Result.lifetime_staked.round(0)
 				%td
 					="#{Result.pot*100}%"
@@ -35,16 +32,16 @@
 %br
 .row
 	.col-md-12.border
-		%p.lead.text-center Past Results
+		%p.lead.text-center Yesterdays Results
 		%table.table.table-bordered
 			%tr
 				%th Date
 				%th Bankroll
 				%th Staked
 				%th Profit
-				%th Points Profit
 				%th POT
-			-@results.first(5).each do |result|
+				%th Portfolio
+			-@results.first(2).each do |result|
 				%tr
 					%td
 						=result.date
@@ -55,17 +52,55 @@
 					%td
 						=result.profit
 					%td
-						=result.points_profit
-					%td
 						="#{result.pot*100}%"
+					%td
+						=result.portfolio.name
 %br
 .row
 	.col-md-6.border
-		%p.lead.text-center Points Profit
-		=line_chart @points_graph, curve: false, colors: ["black"], points: false
+		%p.lead.text-center Premium Picks Profit
+		=line_chart @profit_graph_multi, curve: false, colors: ["black"], points: false
 	.col-md-6.border
-		%p.lead.text-center Actual Profit
-		=line_chart @profit_graph, curve: false, colors: ["black"], points: false
+		%p.lead.text-center Surefire Picks Profit
+		=line_chart @profit_graph_surefire, curve: false, colors: ["black"], points: false
+%br
+.row
+	.col-md-12
+		%p.lead.text-center Pending Bets
+		%table.table.table-bordered
+			%tr
+				%th Date
+				%th Race
+				%th	Meeting
+				%th Horse
+				%th Stake
+				%th Suggested Odds
+				%th Odds
+				%th Result
+				%th Profit
+				%th Portfolio
+			-@pending_bets.each do |bet|
+				%tr
+					%td
+						=bet.pretty_time
+					%td
+						=bet.race
+					%td
+						=bet.meeting
+					%td
+						=bet.selection
+					%td
+						=bet.stake
+					%td
+						=bet.suggested
+					%td
+						=bet.odds
+					%td
+						=bet.result
+					%td
+						=bet.profit.to_f.round(0)
+					%td
+						=bet.portfolio.name
 %br
 .row
 	.col-md-12
@@ -81,6 +116,7 @@
 				%th Odds
 				%th Result
 				%th Profit
+				%th Portfolio
 			-@bets.each do |bet|
 				%tr
 					%td
@@ -101,6 +137,8 @@
 						=bet.result
 					%td
 						=bet.profit.to_f.round(0)
+					%td
+						=bet.portfolio.name
 
 
 
