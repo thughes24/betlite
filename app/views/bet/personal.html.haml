@@ -1,4 +1,3 @@
-=javascript_include_tag "//www.gstatic.com/charts/loader.js"
 %br
 .row
 	.col-md-12.text-center
@@ -65,9 +64,9 @@
 %br
 .row
 	.col-md-6.border
-		=line_chart @profit_graph_multi, colors: ["#66D9EF"],min: -5000,max: 5000, points: false, library: {backgroundColor: "transparent"}
+		=line_chart @profit_graph_multi, adapter: "google", colors: ["#66D9EF"],min: -5000,max: 5000, points: false, library: {backgroundColor: "transparent"}
 	.col-md-6.border
-		=line_chart @profit_graph_surefire, colors: ["#D12650"],min: -5000,max: 5000, points: false, library: {backgroundColor: "transparent"}
+		=line_chart @profit_graph_surefire, adapter: "google", colors: ["#D12650"],min: -5000,max: 5000, points: false, library: {backgroundColor: "transparent"}
 %br
 %hr
 %br
@@ -174,86 +173,66 @@
 		%table.table.table-bordered
 			%tr.fourth-text
 				%th Race
-				%th	Meeting
 				%th Horse
 				%th Stake
-				%th Suggested Odds
-				%th Odds
+				%th Odds (R v. SP)
 				%th Profit
 			-@bets.where(portfolio: @premium).each do |bet|
 				-if bet.profit.to_f > 1
 					%tr.second-text
 						%td
-							=bet.race
-						%td
-							=bet.meeting
+							="#{bet.race} #{bet.meeting}"
 						%td
 							=bet.selection
 						%td
 							=bet.stake
 						%td
-							=bet.suggested
-						%td
-							=bet.odds
+							="#{bet.suggested} -> #{bet.odds}"
 						%td
 							=bet.profit.to_f.round(0)
 				-else
 					%tr
 						%td
-							=bet.race
-						%td
-							=bet.meeting
+							="#{bet.race} #{bet.meeting}"
 						%td
 							=bet.selection
 						%td
 							=bet.stake
 						%td
-							=bet.suggested
-						%td
-							=bet.odds
+							="#{bet.suggested} -> #{bet.odds}"
 						%td
 							=bet.profit.to_f.round(0)
 	.col-md-6
 		%table.table.table-bordered
 			%tr.third-text
 				%th Race
-				%th	Meeting
 				%th Horse
 				%th Stake
-				%th Suggested Odds
-				%th Odds
+				%th Odds (R -> SP)
 				%th Profit
 			-@bets.where(portfolio: @surefire).each do |bet|
 				-if bet.profit.to_f > 1
 					%tr.second-text
 						%td
-							=bet.race
-						%td
-							=bet.meeting
+							="#{bet.race} #{bet.meeting}"
 						%td
 							=bet.selection
 						%td
 							=bet.stake
 						%td
-							=bet.suggested
-						%td
-							=bet.odds
+							="#{bet.suggested} -> #{bet.odds}"
 						%td
 							=bet.profit.to_f.round(0)
 				-else
 					%tr
 						%td
-							=bet.race
-						%td
-							=bet.meeting
+							="#{bet.race} #{bet.meeting}"
 						%td
 							=bet.selection
 						%td
 							=bet.stake
 						%td
-							=bet.suggested
-						%td
-							=bet.odds
+							="#{bet.suggested} -> #{bet.odds}"
 						%td
 							=bet.profit.to_f.round(0)				
 
