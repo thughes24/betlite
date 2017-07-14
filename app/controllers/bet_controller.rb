@@ -4,6 +4,8 @@ class BetController < ApplicationController
 	end
 
 	def personal
+		@surefire = Portfolio.last
+		@premium = Portfolio.first
 		@results = Result.all.order('created_at DESC')
 		@pending_bets = Bet.pending_bets
 		@bets = Bet.where("created_at >= ?", Time.zone.yesterday).order('created_at ASC')
