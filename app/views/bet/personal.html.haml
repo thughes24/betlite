@@ -92,7 +92,7 @@
 			-@pending_bets.where(portfolio: @premium).each do |bet|
 				%tr
 					%td
-						=bet.race
+						="#{bet.race} #{bet.time_to}"
 					%td
 						=bet.meeting
 					%td
@@ -112,7 +112,7 @@
 			-@pending_bets.where(portfolio: @surefire).each do |bet|
 				%tr
 					%td
-						=bet.race
+						="#{bet.race} #{bet.time_to}"
 					%td
 						=bet.meeting
 					%td

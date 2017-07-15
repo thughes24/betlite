@@ -53,4 +53,17 @@ class Bet < ActiveRecord::Base
 	def pretty_time
   		created_at.strftime("%d-%m-%y")
   	end
+
+  	def time_to
+  		dif = Time.parse("#{race} UTC")-Time.now.gmtime
+  		if dif/60 < -60
+  			return "(#{(-dif/3600).round(0)} hrs ago)"
+  		elsif dif/60 < 0
+  			return "(#{(-dif/60).round(0)} mins ago)" 
+  		elsif dif/60 < 60
+  			return "(#{(dif/60).round(0)} mins)"
+  		else
+  			return "(#{(dif/3600).round(0)} hrs)"
+  		end
+  	end
 end
