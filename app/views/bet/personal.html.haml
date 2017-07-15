@@ -9,7 +9,10 @@
 %br
 .row
 	.col-md-6.border
-		%p.lead.text-center.fourth-text Premium Picks
+		%p.lead.text-center.fourth-text
+			Premium Picks
+			&nbsp;&nbsp;
+			=link_to "(Subscribe)", "#", class: "small black"
 		%table.table.table-bordered
 			%tr.fourth-text
 				%th Days Running
@@ -32,7 +35,10 @@
 				%td
 					="#{((Result.lifetime_profit(@premium)/10000)*100).round(2)}%"
 	.col-md-6.border
-		%p.lead.text-center.third-text Surefire Picks
+		%p.lead.text-center.third-text
+			Surefire Picks
+			&nbsp;&nbsp;
+			=link_to "(Subscribe)", "#", class: "small black"
 		%table.table.table-bordered
 			%tr.third-text
 				%th Days Running
@@ -120,7 +126,7 @@
 %br
 .row
 	.col-md-12.text-center.white-text
-		%h5 Yesterdays Results
+		%h5 Yesterday's Results
 %br
 .row
 	.col-md-6.border
@@ -166,7 +172,7 @@
 %br
 .row
 	.col-md-12.text-center.white-text
-		%h5 Yesterdays Bets
+		%h5 Yesterday's Bets
 %br
 .row
 	.col-md-6
@@ -175,13 +181,13 @@
 				%th Race
 				%th Horse
 				%th Stake
-				%th Odds (R v. SP)
+				%th Odds (R -> SP)
 				%th Profit
 			-@bets.where(portfolio: @premium).each do |bet|
 				-if bet.profit.to_f > 1
 					%tr.second-text
 						%td
-							="#{bet.race} #{bet.meeting}"
+							="#{bet.race} #{bet.meeting[0..3].upcase}"
 						%td
 							=bet.selection
 						%td
@@ -193,7 +199,7 @@
 				-else
 					%tr
 						%td
-							="#{bet.race} #{bet.meeting}"
+							="#{bet.race} #{bet.meeting[0..3].upcase}"
 						%td
 							=bet.selection
 						%td
@@ -214,7 +220,7 @@
 				-if bet.profit.to_f > 1
 					%tr.second-text
 						%td
-							="#{bet.race} #{bet.meeting}"
+							="#{bet.race} #{bet.meeting[0..3].upcase}"
 						%td
 							=bet.selection
 						%td
@@ -226,7 +232,7 @@
 				-else
 					%tr
 						%td
-							="#{bet.race} #{bet.meeting}"
+							="#{bet.race} #{bet.meeting[0..3].upcase}"
 						%td
 							=bet.selection
 						%td

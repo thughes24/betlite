@@ -3,7 +3,7 @@ class Bet < ActiveRecord::Base
 	validates_presence_of :betId
 	validates_uniqueness_of :portfolio_id, scope: [:selectionId, :marketId], on: :create
 	def self.calculate_stake(odds, portfolio_id)
-		((Result.where(portfolio_id: portfolio_id).last.after*0.05)/(odds-1)).to_i
+		((Result.where(portfolio_id: portfolio_id).last.after*0.03)/(odds-1)).to_i
 	end
 
 	def self.return_five_percent_profit(odds)
