@@ -70,60 +70,61 @@
 %br
 .row
 	.col-md-6.border
-		=line_chart @profit_graph_multi, colors: ["#66D9EF"],min: -5000,max: 5000, points: false, library: {backgroundColor: "transparent"}
+		=line_chart @profit_graph_multi, colors: ["#66D9EF"],min: -3000,max: 3000, points: false, library: {backgroundColor: "transparent"}
 	.col-md-6.border
-		=line_chart @profit_graph_surefire, colors: ["#D12650"],min: -5000,max: 5000, points: false, library: {backgroundColor: "transparent"}
+		=line_chart @profit_graph_surefire, colors: ["#D12650"],min: -3000,max: 3000, points: false, library: {backgroundColor: "transparent"}
 %br
 %hr
 %br
-.row
-	.col-md-12.text-center.white-text
-		%h5 Pending Bets
-%br
-.row
-	.col-md-6
-		%table.table.table-bordered
-			%tr.fourth-text
-				%th Race
-				%th	Meeting
-				%th Horse
-				%th Stake
-				%th Suggested Odds
-			-@pending_bets.where(portfolio: @premium).each do |bet|
-				%tr
-					%td
-						="#{bet.race} #{bet.time_to}"
-					%td
-						=bet.meeting
-					%td
-						=bet.selection
-					%td
-						=bet.stake
-					%td
-						=bet.suggested
-	.col-md-6
-		%table.table.table-bordered
-			%tr.third-text
-				%th Race
-				%th	Meeting
-				%th Horse
-				%th Stake
-				%th Suggested Odds
-			-@pending_bets.where(portfolio: @surefire).each do |bet|
-				%tr
-					%td
-						="#{bet.race} #{bet.time_to}"
-					%td
-						=bet.meeting
-					%td
-						=bet.selection
-					%td
-						=bet.stake
-					%td
-						=bet.suggested
-%br
-%hr
-%br
+-if @pending_bets.count > 0
+	.row
+		.col-md-12.text-center.white-text
+			%h5 Pending Bets
+	%br
+	.row
+		.col-md-6
+			%table.table.table-bordered
+				%tr.fourth-text
+					%th Race
+					%th	Meeting
+					%th Horse
+					%th Stake
+					%th Suggested Odds
+				-@pending_bets.where(portfolio: @premium).each do |bet|
+					%tr
+						%td
+							="#{bet.race} #{bet.time_to}"
+						%td
+							=bet.meeting
+						%td
+							=bet.selection
+						%td
+							=bet.stake
+						%td
+							=bet.suggested
+		.col-md-6
+			%table.table.table-bordered
+				%tr.third-text
+					%th Race
+					%th	Meeting
+					%th Horse
+					%th Stake
+					%th Suggested Odds
+				-@pending_bets.where(portfolio: @surefire).each do |bet|
+					%tr
+						%td
+							="#{bet.race} #{bet.time_to}"
+						%td
+							=bet.meeting
+						%td
+							=bet.selection
+						%td
+							=bet.stake
+						%td
+							=bet.suggested
+	%br
+	%hr
+	%br
 .row
 	.col-md-12.text-center.white-text
 		%h5 Yesterday's Results
@@ -132,25 +133,6 @@
 	.col-md-6.border
 		%table.table.table-bordered
 			%tr.fourth-text
-				%th Date
-				%th Bankroll
-				%th Staked
-				%th Profit
-				%th POT
-				%tr
-					%td
-						=@results.first(2).last.date
-					%td
-						=@results.first(2).last.after
-					%td
-						=@results.first(2).last.total_staked
-					%td
-						=@results.first(2).last.profit
-					%td
-						="#{@results.first(2).last.pot*100}%"
-	.col-md-6.border
-		%table.table.table-bordered
-			%tr.third-text
 				%th Date
 				%th Bankroll
 				%th Staked
@@ -167,6 +149,25 @@
 						=@results.first.profit
 					%td
 						="#{@results.first.pot*100}%"
+	.col-md-6.border
+		%table.table.table-bordered
+			%tr.third-text
+				%th Date
+				%th Bankroll
+				%th Staked
+				%th Profit
+				%th POT
+				%tr
+					%td
+						=@results.first(2).last.date
+					%td
+						=@results.first(2).last.after
+					%td
+						=@results.first(2).last.total_staked
+					%td
+						=@results.first(2).last.profit
+					%td
+						="#{@results.first(2).last.pot*100}%"
 %br
 %hr
 %br
