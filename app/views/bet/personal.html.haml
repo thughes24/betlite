@@ -4,6 +4,10 @@
 		%h1 [Auto.bet]
 %br
 .row
+	.col-md-12.text-center 
+		%p.lead Invest Today - You'd Be Fucking Stupid Not To.
+%br
+.row
 	.col-md-12.text-center.white-text
 		%h5 Summary
 %br
@@ -70,9 +74,9 @@
 %br
 .row
 	.col-md-6.border
-		=line_chart @profit_graph_multi, colors: ["#66D9EF"],min: -3000,max: 3000, points: false, library: {backgroundColor: "transparent"}
+		=area_chart @profit_graph_multi, colors: ["#66D9EF"],min: -3000,max: 3000, points: false, library: {backgroundColor: "transparent"}
 	.col-md-6.border
-		=line_chart @profit_graph_surefire, colors: ["#D12650"],min: -3000,max: 3000, points: false, library: {backgroundColor: "transparent"}
+		=area_chart @profit_graph_surefire, colors: ["#D12650"],min: -3000,max: 3000, points: false, library: {backgroundColor: "transparent"}
 %br
 %hr
 %br
@@ -132,7 +136,7 @@
 .row
 	.col-md-6.border
 		%table.table.table-bordered
-			%tr.fourth-text
+			%tr.third-text
 				%th Date
 				%th Bankroll
 				%th Staked
@@ -140,15 +144,15 @@
 				%th POT
 				%tr
 					%td
-						=@results.first.date
+						=@results.where(portfolio_id: 1).first.date
 					%td
-						=@results.first.after
+						=@results.where(portfolio_id: 1).first.after
 					%td
-						=@results.first.total_staked
+						=@results.where(portfolio_id: 1).first.total_staked
 					%td
-						=@results.first.profit
+						=@results.where(portfolio_id: 1).first.profit
 					%td
-						="#{@results.first.pot*100}%"
+						="#{@results.where(portfolio_id: 1).first.pot*100}%"
 	.col-md-6.border
 		%table.table.table-bordered
 			%tr.third-text
@@ -159,15 +163,15 @@
 				%th POT
 				%tr
 					%td
-						=@results.first(2).last.date
+						=@results.where(portfolio_id: 2).first.date
 					%td
-						=@results.first(2).last.after
+						=@results.where(portfolio_id: 2).first.after
 					%td
-						=@results.first(2).last.total_staked
+						=@results.where(portfolio_id: 2).first.total_staked
 					%td
-						=@results.first(2).last.profit
+						=@results.where(portfolio_id: 2).first.profit
 					%td
-						="#{@results.first(2).last.pot*100}%"
+						="#{@results.where(portfolio_id: 2).first.pot*100}%"
 %br
 %hr
 %br

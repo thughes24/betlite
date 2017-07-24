@@ -61,7 +61,24 @@ end
 
 #####---DELETEWHENDONE------####
 
-task :fix_one => :environment do
+task :clear_premium => :environment do
+  Bet.where(portfolio_id: 1).each do |x|
+    x.delete
+  end
+  Result.where(portfolio_id: 1).each do |x|
+    x.delete
+  end
+end
+task :clear_surefire => :environment do
+  Bet.where(portfolio_id: 2).each do |x|
+    x.delete
+  end
+  Result.where(portfolio_id: 2).each do |x|
+    x.delete
+  end
+end
+
+task :fix_one_premium => :environment do
   bank = 5000
   Bet.all.where(portfolio_id: 1).reject{|y| y.result.blank?}.each do |x|
     x.stake = (bank*(0.03))/(x.suggested.to_f-1)
@@ -79,7 +96,75 @@ task :fix_one => :environment do
   end
 end
 
-task :fix_two => :environment do
+task :fix_one_surefire => :environment do
+  bank = 5000
+  Bet.all.where(portfolio_id: 2).reject{|y| y.result.blank?}.each do |x|
+    x.stake = (bank*(0.03))/(x.suggested.to_f-1)
+    if x.result == "WON"
+      prof = (x.stake.to_f*(x.odds.to_f-1))*(0.95)
+    elsif x.result == "LOST"
+      prof = -(x.stake.to_f)
+    else
+      prof = 0
+    end
+    bank += prof
+    x.profit = prof
+    x.save
+    puts bank
+  end
+end
+
+task :fix_two_premium => :environment do
+  munz = 5000
+  runnin = 0
+  bets = Bet.all.where(portfolio_id: 1).order(:created_at)
+  days = ((bets.last.created_at - bets.first.created_at)/(60*60*24)).to_i
+  days.times do |i|
+    result = Result.new
+    m = munz
+    result.date = (Date.today - days) + i
+    result.portfolio_id = 1
+    result.previous = m
+    days_bets = Bet.all.where("DATE(created_at) = ?", ((Date.today-days)+i)).reject{|t|t.portfolio_id == 2}
+    prof = days_bets.count > 0 ? days_bets.map(&:profit).map(&:to_f).inject(:+) : 0
+    stak = days_bets.count > 0 ? days_bets.map(&:stake).map(&:to_f).inject(:+) : 0
+    result.profit = prof
+    result.total_staked = stak
+    result.after = m + prof
+    munz += prof
+    r = runnin + prof
+    result.running_profit = r
+    runnin += prof
+    result.save
+  end
+end
+
+task :fix_two_surefire => :environment do
+  munz = 5000
+  runnin = 0
+  bets = Bet.all.where(portfolio_id: 2).order(:created_at)
+  days = ((bets.last.created_at - bets.first.created_at)/(60*60*24)).to_i
+  days.times do |i|
+    result = Result.new
+    m = munz
+    result.date = (Date.today - days) + i
+    result.portfolio_id = 2
+    result.previous = m
+    days_bets = Bet.all.where("DATE(created_at) = ?", ((Date.today-days)+i)).reject{|t|t.portfolio_id == 1}
+    prof = days_bets.count > 0 ? days_bets.map(&:profit).map(&:to_f).inject(:+) : 0
+    stak = days_bets.count > 0 ? days_bets.map(&:stake).map(&:to_f).inject(:+) : 0
+    result.profit = prof
+    result.total_staked = stak
+    result.after = m + prof
+    munz += prof
+    r = runnin + prof
+    result.running_profit = r
+    runnin += prof
+    result.save
+  end
+end
+
+task :fix_outdated => :environment do
   munz = 5000
   runnin = 0
   Result.all.where(portfolio_id: 1).sort.each do |result|

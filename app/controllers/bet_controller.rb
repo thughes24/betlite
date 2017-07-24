@@ -6,7 +6,7 @@ class BetController < ApplicationController
 	def personal
 		@surefire = Portfolio.last
 		@premium = Portfolio.first
-		@results = Result.all.order('created_at DESC')
+		@results = Result.all.order('date DESC')
 		@pending_bets = Bet.pending_bets
 		@bets = Bet.where("DATE(created_at) = ?", Date.parse(Time.new.gmtime.to_s)-1)
 		@profit_graph_multi = @results.where(portfolio_id: 1).sort_by(&:date).map{|x| [x.date, x.running_profit]}

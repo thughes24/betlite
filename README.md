@@ -23,7 +23,7 @@ Things you may want to cover:
 
 * ...
 
-rake db:migrate
-rails c create portfolios
-rails c create first results for surefire bets
-UP TO EDITING INPUT_BET AND RAKE TASKS
+delete bets & results for portfolio_id 1
+C&P bets from terminal into heroku terminal
+create bets
+run rake fix_one
