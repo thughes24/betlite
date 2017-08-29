@@ -12,15 +12,17 @@ class BetfairWrapper
 		((profit.to_f)*((100-real_comission)/100.00)).to_s
 	end
 
-	def place_bet(market,horse,stake)
+	def place_bet(market,horse,stake, odds)
 		@order = @client.place_orders({
 			marketId: market,
 			instructions: [{
-				orderType: "MARKET_ON_CLOSE",
+				orderType: "LIMIT",
 				selectionId: horse,
 				side: "BACK",
-				marketOnCloseOrder: {
-					liability: "#{stake}"
+				limitOrder: {
+					size: stake,
+					price: odds,
+					persistenceType: "MARKET_ON_CLOSE"
 		    	}
 		  	}]
 		})
