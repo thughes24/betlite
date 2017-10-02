@@ -17,7 +17,7 @@ class Bet < ActiveRecord::Base
 				portfolio = Portfolio.find(x["betId"])
 				stake = calculate_stake(x["recommended_odds"].to_f,portfolio.id)
 				@current_bet = Bet.new(meeting: x["meeting"].titleize, race: x["race"],selection: x["selection"].titleize, stake: stake,betId: 'placeholder', meetingId: x["meetingId"], marketId: x["marketId"],selectionId: x["selectionId"], points: x["points"], suggested: x["recommended_odds"], portfolio: portfolio)
-				if @current_bet.valid?
+				if @current_bet.valid? && stake < 250 && x["recommended_odds"].to_f > 1.2
 					@bet = @bf.place_bet(x["marketId"],x["selectionId"],stake.to_i, x["recommended_odds"].to_f)
 					if @bet["status"] == "SUCCESS"
 						@current_bet.betId = @bet["instructionReports"].first["betId"]
